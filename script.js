@@ -18,6 +18,8 @@ let noiseLevels = noise.generateNoise(amount,a)
 
 let camX = 0;
 let camY = 0;
+let camZ = 1;
+
 
 let lastTime = Date.now()
 let elapsedTime = 0
@@ -38,6 +40,9 @@ function fpsManager(dt) {
     return val/fps.length
 }
 
+
+
+
 function draw() {
     elapsedTime = (Date.now() - lastTime)/1000
     if (input.ArrowDown || input.ArrowUp) {
@@ -47,28 +52,31 @@ function draw() {
     }
     if (input.r) {noiseLevels = noise.generateNoise(amount,a)}
 
-    camX += (Number(input.d) - Number(input.a))*5
-    camY += (Number(input.w) - Number(input.s))*-5
+    camX += ((Number(input.d) - Number(input.a))*5)/camZ
+    camY += ((Number(input.w) - Number(input.s))*-5)/+camZ
+
+    if (input["="]) {camZ *= 1.1}
+    if (input["-"]) {camZ /= 1.1}
 
     ctx.clearRect(0,0,WIDTH,HEIGHT);
     ctx.fillStyle = "rgb(60,60,60)";
     ctx.fillRect(0,0,WIDTH,HEIGHT);
-    ctx.lineWidth = 2
+    ctx.lineWidth = 2*camZ
 
     for (let x = 0; x < noiseLevels.length-1; x++) {
-        if (x-camX < 0) {continue;}
-        if (x-camX > WIDTH) {break;}
+        if ((x-camX)*camZ + WIDTH/2 < 0) {continue;}
+        if ((x-camX)*camZ + WIDTH/2 > WIDTH) {break;}
         
         ctx.strokeStyle = "saddlebrown"
         ctx.beginPath();
-        ctx.moveTo(x-camX,((HEIGHT/2)+noiseLevels[x])-camY+15)
-        ctx.lineTo(x-camX,500-camY)
+        ctx.moveTo((x-camX)*camZ + WIDTH/2,(noiseLevels[x]-camY+15)*camZ + HEIGHT/2)
+        ctx.lineTo((x-camX)*camZ + WIDTH/2,(500-camY)*camZ + HEIGHT/2)
         ctx.stroke();
 
         ctx.strokeStyle = "green";
         ctx.beginPath();
-        ctx.moveTo(x-camX,((HEIGHT/2)+noiseLevels[x])-camY)
-        ctx.lineTo(x-camX,((HEIGHT/2)+noiseLevels[x])-camY+15)
+        ctx.moveTo((x-camX)*camZ + WIDTH/2,(noiseLevels[x]-camY)*camZ + HEIGHT/2)
+        ctx.lineTo((x-camX)*camZ + WIDTH/2,(noiseLevels[x]-camY+15)*camZ + HEIGHT/2)
         ctx.stroke();
     }
 
@@ -76,7 +84,8 @@ function draw() {
     ctx.fillStyle = "black"
     ctx.fillText(`Amplitude: ${a}`,0,HEIGHT*0.04);
     ctx.fillText(`Pos: ${camX},${camY}`,0,HEIGHT*0.08)
-    ctx.fillText(`FPS: ${fpsManager(elapsedTime)}`,0,HEIGHT*0.12)
+    //ctx.fillText(`FPS: ${fpsManager(elapsedTime)}`,0,HEIGHT*0.12)
+    //ctx.fillText(`DeltaTime: ${elapsedTime}`,0,HEIGHT*0.16)
     lastTime = Date.now()
 }
 

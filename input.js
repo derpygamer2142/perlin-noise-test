@@ -6,6 +6,8 @@ export default class Input {
         this.s = false;
         this.d = false;
         this.r = false;
+        this["="] = false;
+        this["-"] = false;
         this.ArrowUp = false;
         this.ArrowDown = false;
         this.initInput();
