@@ -14,7 +14,7 @@ export default class Noise {
         let noiseSlopes = [];
 
         for (let i = 0; i < slopes.length; i++) {
-            for (let a = 0; a <= 1; a += 0.1) {
+            for (let a = 0; a <= 1; a += 0.01) {
                 noiseSlopes.push(this.tween(slopes[i],slopes[i+1],a))
             }
         }

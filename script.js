@@ -70,7 +70,7 @@ function draw() {
         ctx.strokeStyle = "saddlebrown"
         ctx.beginPath();
         ctx.moveTo((x-camX)*camZ + WIDTH/2,(noiseLevels[x]-camY+15)*camZ + HEIGHT/2)
-        ctx.lineTo((x-camX)*camZ + WIDTH/2,(500-camY)*camZ + HEIGHT/2)
+        ctx.lineTo((x-camX)*camZ + WIDTH/2,(1500-camY)*camZ + HEIGHT/2)
         ctx.stroke();
 
         ctx.strokeStyle = "green";
